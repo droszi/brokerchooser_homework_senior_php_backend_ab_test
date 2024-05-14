@@ -2,21 +2,50 @@
 
 namespace Database\Seeders;
 
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\AbTest;
 use Illuminate\Database\Seeder;
+use Tests\Helpers\AbTestTrait;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
+    use AbTestTrait;
+
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
+        $this->createAbTestWithVariants(
+            'test ready to run',
+            AbTest::STATUS_READY_TO_RUN,
+            [
+                'a' => 1,
+                'b' => 2,
+            ]
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        );
+        $this->createAbTestWithVariants(
+            'test 1',
+            AbTest::STATUS_RUNNING,
+            [
+                'test 1 a' => 1,
+                'test 1 b' => 2,
+            ]
+        );
+
+        $this->createAbTestWithVariants(
+            'test 2',
+            AbTest::STATUS_RUNNING,
+            [
+                'test 2 a' => 2,
+                'test 2 b' => 1,
+            ]
+        );
+
+        $this->createAbTestWithVariants(
+            'test stopped',
+            AbTest::STATUS_STOP,
+            [
+                'a' => 1,
+                'b' => 2,
+            ]
+        );
     }
 }
