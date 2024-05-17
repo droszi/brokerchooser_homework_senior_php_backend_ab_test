@@ -39,7 +39,7 @@ class AbTestService
             throw new AbTestNotFound();
         }
 
-        if (!$abTest->isReadyToRun) {
+        if (!$abTest->isRunnable) {
             throw new AbTestNotRunnable();
         }
 

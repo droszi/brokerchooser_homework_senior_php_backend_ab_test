@@ -41,4 +41,9 @@ class AbTest extends Model
     {
         return $this->status === self::STATUS_STOP;
     }
+
+    protected function getIsRunnableAttribute(): bool
+    {
+        return $this->isReadyToRun && count($this->variants) >= 2;
+    }
 }
