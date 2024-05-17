@@ -29,7 +29,7 @@ trait AbTestTrait
         string $testName,
         string $status,
         array $variants
-    ): void
+    ): AbTest
     {
         $abTest = AbTest::factory()->create([
             'name' => $testName,
@@ -42,6 +42,8 @@ trait AbTestTrait
                 'targeting_ratio' => $targetingRatio,
             ]);
         }
+
+        return $abTest;
     }
 
     private function createBrokenAbTests(): void

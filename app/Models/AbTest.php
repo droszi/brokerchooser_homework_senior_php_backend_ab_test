@@ -26,4 +26,14 @@ class AbTest extends Model
     {
         return $query->where('status', self::STATUS_RUNNING);
     }
+
+    protected function getIsRunningAttribute(): bool
+    {
+        return $this->status === self::STATUS_RUNNING;
+    }
+
+    protected function getIsReadyToRunAttribute(): bool
+    {
+        return $this->status === self::STATUS_READY_TO_RUN;
+    }
 }

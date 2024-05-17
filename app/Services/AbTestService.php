@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Exceptions\AbTestNotFound;
+use App\Exceptions\AbTestNotRunnable;
 use App\Models\AbTest;
 use App\Models\Session;
 
@@ -26,5 +28,21 @@ class AbTestService
                 $session->abTestVariants()->attach($selectedVariant);
             }
         }
+    }
+
+    public function startAbTestById(int $id): void
+    {
+        $abTest = AbTest::find($id);
+
+        if (!$abTest) {
+            throw new AbTestNotFound();
+        }
+
+        if (!$abTest->isReadyToRun) {
+            throw new AbTestNotRunnable();
+        }
+
+        $abTest->status = AbTest::STATUS_RUNNING;
+        $abTest->save();
     }
 }
