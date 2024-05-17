@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Exceptions\AbTestNotFound;
 use App\Exceptions\AbTestNotRunnable;
+use App\Exceptions\AbTestNotRunning;
 use App\Models\AbTest;
 use App\Models\Session;
 
@@ -43,6 +44,22 @@ class AbTestService
         }
 
         $abTest->status = AbTest::STATUS_RUNNING;
+        $abTest->save();
+    }
+
+    public function stopAbTestById(int $id): void
+    {
+        $abTest = AbTest::find($id);
+
+        if (!$abTest) {
+            throw new AbTestNotFound();
+        }
+
+        if (!$abTest->isRunning) {
+            throw new AbTestNotRunning();
+        }
+
+        $abTest->status = AbTest::STATUS_STOP;
         $abTest->save();
     }
 }

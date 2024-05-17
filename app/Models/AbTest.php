@@ -36,4 +36,9 @@ class AbTest extends Model
     {
         return $this->status === self::STATUS_READY_TO_RUN;
     }
+
+    protected function getIsStoppedAttribute(): bool
+    {
+        return $this->status === self::STATUS_STOP;
+    }
 }

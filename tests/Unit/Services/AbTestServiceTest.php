@@ -4,6 +4,7 @@ namespace Tests\Unit\Services;
 
 use App\Exceptions\AbTestNotFound;
 use App\Exceptions\AbTestNotRunnable;
+use App\Exceptions\AbTestNotRunning;
 use App\Models\AbTest;
 use App\Models\Session;
 use App\Services\AbTestService;
@@ -139,7 +140,7 @@ class AbTestServiceTest extends TestCase
         $this->assertFalse($test1->isRunning);
     }
 
-    public function test_startAbTestById_RunnableTestsExist_TestsStarted(): void
+    public function test_startAbTestById_RunnableTestsExist_TestStarted(): void
     {
         $test1 = $this->createAbTestWithVariants(
             'test ready to run',
@@ -165,6 +166,55 @@ class AbTestServiceTest extends TestCase
         $test2->refresh();
 
         $this->assertTrue($test1->isRunning);
-        $this->assertFalse($test2->isRunning);
+        $this->assertTrue($test2->isReadyToRun);
+    }
+
+    public function test_stopAbTestById_TestDoesNotExists_ExceptionThrown(): void
+    {
+        $this->expectException(AbTestNotFound::class);
+        $this->abTestService->stopAbTestById(1);
+    }
+
+    public function test_stopAbTestById_TestsExistsButNotRunning_ExceptionThrown(): void
+    {
+        $this->expectException(AbTestNotRunning::class);
+
+        $test1 = $this->createAbTestWithVariants(
+            'test stopped',
+            AbTest::STATUS_STOP,
+            [
+                'a' => 1,
+                'b' => 2,
+            ]
+        );
+
+        $this->abTestService->stopAbTestById($test1->id);
+
+        $test1->refresh();
+
+        $this->assertTrue($test1->isReadyToRun);
+    }
+
+    public function test_stopAbTestById_RunningTestsExist_TestStopped(): void
+    {
+        $test1 = $this->createAbTestWithVariants(
+            'test ready to run',
+            AbTest::STATUS_RUNNING,
+            [],
+        );
+
+        $test2 = $this->createAbTestWithVariants(
+            'other test ready to run',
+            AbTest::STATUS_RUNNING,
+            [],
+        );
+
+        $this->abTestService->stopAbTestById($test1->id);
+
+        $test1->refresh();
+        $test2->refresh();
+
+        $this->assertTrue($test1->isStopped);
+        $this->assertTrue($test2->isRunning);
     }
 }
