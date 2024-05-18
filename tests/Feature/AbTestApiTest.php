@@ -10,7 +10,7 @@ uses(
 );
 
 it('start returns 404 on a missing test', function () {
-    $response = $this->post("/api/v1/abtest/0/start", []);
+    $response = $this->put("/api/v1/abtest/0/start");
 
     $response->assertStatus(404);
 });
@@ -22,7 +22,7 @@ it('start returns 409 on test not in runnable state', function () {
         []
     );
 
-    $response = $this->post("/api/v1/abtest/{$abTest->id}/start", []);
+    $response = $this->put("/api/v1/abtest/{$abTest->id}/start");
 
     $response->assertStatus(409);
 });
@@ -37,7 +37,7 @@ it('starts a test', function () {
         ]
     );
 
-    $response = $this->post("/api/v1/abtest/{$abTest->id}/start", []);
+    $response = $this->put("/api/v1/abtest/{$abTest->id}/start");
 
     $abTest->refresh();
 
@@ -46,7 +46,7 @@ it('starts a test', function () {
 });
 
 it('stop returns 404 on a missing test', function () {
-    $response = $this->post("/api/v1/abtest/0/stop", []);
+    $response = $this->put("/api/v1/abtest/0/stop");
 
     $response->assertStatus(404);
 });
@@ -58,7 +58,7 @@ it('stop returns 409 on test not in running state', function () {
         []
     );
 
-    $response = $this->post("/api/v1/abtest/{$abTest->id}/stop", []);
+    $response = $this->put("/api/v1/abtest/{$abTest->id}/stop");
 
     $response->assertStatus(409);
 });
@@ -70,7 +70,7 @@ it('stops a test', function () {
         []
     );
 
-    $response = $this->post("/api/v1/abtest/{$abTest->id}/stop", []);
+    $response = $this->put("/api/v1/abtest/{$abTest->id}/stop");
 
     $abTest->refresh();
 

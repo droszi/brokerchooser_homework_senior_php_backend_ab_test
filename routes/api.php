@@ -19,5 +19,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/v1/abtest/{id}/start', [AbTestController::class, 'start']);
-Route::post('/v1/abtest/{id}/stop', [AbTestController::class, 'stop']);
+Route::put('/v1/abtest/{id}/start', [AbTestController::class, 'start']);
+Route::put('/v1/abtest/{id}/stop', [AbTestController::class, 'stop']);
