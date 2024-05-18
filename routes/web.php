@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AbTestDemoController;
+use App\Http\Controllers\AbTestAdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,3 +20,5 @@ Route::get('/', function () {
 });
 
 Route::get('/abtestdemo', AbTestDemoController::class);
+Route::get('/abtest/demo', AbTestDemoController::class);
+Route::get('/abtest/admin', AbTestAdminController::class);
