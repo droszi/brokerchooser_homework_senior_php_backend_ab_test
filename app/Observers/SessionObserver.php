@@ -7,9 +7,9 @@ use App\Services\AbTestService;
 
 class SessionObserver
 {
-    public function __construct(private AbTestService $abTestService)
-    {
-    }
+    public function __construct(
+        private readonly AbTestService $abTestService
+    ) {}
 
     public function created(Session $session): void
     {

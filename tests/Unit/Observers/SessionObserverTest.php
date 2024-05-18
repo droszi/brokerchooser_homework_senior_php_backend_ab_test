@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Services;
+namespace Tests\Unit\Observers;
 
 use App\Models\AbTest;
 use App\Models\Session;
